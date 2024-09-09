@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import ImageMobile from '../assets/img/Ztellalogo.png';
@@ -6,6 +6,16 @@ import ImageDesktop from '../assets/img/favicon.png';
 import { Label, Input, Button } from '@windmill/react-ui';
 
 function ForgotPassword() {
+  const [isPopupVisible, setIsPopupVisible] = useState(false);
+
+  const handlePasswordRecovery = () => {
+    // Show the popup
+    setIsPopupVisible(true);
+
+    // // Optionally, you can hide the popup after a few seconds or on some other condition
+    // setTimeout(() => setIsPopupVisible(false), 3000); // Hide after 3 seconds
+  };
+
   return (
     <div className="flex items-center min-h-screen p-6 bg-gray-50 dark:bg-gray-900">
       <div className="flex-1 h-full max-w-4xl mx-auto overflow-hidden bg-white rounded-lg shadow-xl dark:bg-gray-800">
@@ -36,8 +46,7 @@ function ForgotPassword() {
               </Label>
 
               <Button
-                tag={Link}
-                to="/login"
+                type="button"
                 block
                 className="mt-4"
                 style={{
@@ -46,6 +55,7 @@ function ForgotPassword() {
                 }}
                 onMouseEnter={(e) => e.target.style.backgroundColor = '#16a34a'} // Darker green on hover
                 onMouseLeave={(e) => e.target.style.backgroundColor = '#41aa5e'} // Original green
+                onClick={handlePasswordRecovery} // Handle button click
               >
                 Recover password
               </Button>
@@ -53,6 +63,27 @@ function ForgotPassword() {
           </main>
         </div>
       </div>
+
+      {/* Popup */}
+      {isPopupVisible && (
+        <div className="fixed inset-0 flex items-center justify-center z-50">
+          
+          <div className="bg-white p-4 rounded shadow-lg dark:bg-gray-800">
+            <p className="text-gray-700 dark:text-gray-200">A password reset link has been sent to your email.</p>
+            <Link 
+            to="/login">
+            <button  style={{
+                  backgroundColor: '#41aa5e', // Custom green color
+                  transition: 'background-color 0.3s ease',
+                  color:'white',
+                  padding:'10px',
+                  borderRadius:'5px',
+                  fontSize:'small',
+                }}
+                >Go to Login</button></Link>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

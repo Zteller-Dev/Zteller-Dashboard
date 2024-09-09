@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom/cjs/react-router-dom.min';
 import './excoform.css';
 
 const MultiForm = ({ onClose }) => {
   const [activeForm, setActiveForm] = useState('contact');
   const [showCompletionPopup, setShowCompletionPopup] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(true);
+
 
   const handleNextForm = (nextForm) => {
     setActiveForm(nextForm);
@@ -15,12 +17,14 @@ const MultiForm = ({ onClose }) => {
     setTimeout(() => {
       setShowCompletionPopup(false);
       onClose();
-    }, 3000);
+     
+    },100000);
   };
 
   const handleClosePopup = () => {
     setShowCompletionPopup(false);
     setIsModalVisible(false);
+    
   };
 
   if (!isModalVisible) return null;
@@ -66,12 +70,15 @@ const MultiForm = ({ onClose }) => {
               <h2 className="text-2xl font-bold">Registration Complete</h2>
             </div>
             <p>Your Registration is complete and it will take 24hrs to verify your Registration.</p>
+           <Link
+                  to="/login">
             <button
               onClick={handleClosePopup}
               className="mt-4 px-4 py-2 bg-green-400 text-white rounded-lg hover:bg-green-500 transition duration-200"
             >
               OK
             </button>
+            </Link>
           </div>
         </div>
       )}
@@ -345,14 +352,7 @@ const ExcoForm = ({ onNext }) => {
       )}
       <h2 className="text-2xl font-bold mb-6">Exco Information</h2>
       <div className={`space-y-6 ${isLoading ? 'opacity-50' : ''}`}>
-        <input
-          type="text"
-          name="association"
-          placeholder="Association"
-          value={formData.association}
-          onChange={handleChange}
-          className={`w-full p-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-400 ${errors.association ? 'border-red-500' : ''}`}
-        />
+       localStorage
         {errors.association && <p className="text-red-500 text-sm">{errors.association}</p>}
         
         <select
@@ -516,6 +516,7 @@ const AccountForm = ({ onComplete }) => {
         {errors.accountNumber && <p className="text-red-500 text-sm">{errors.accountNumber}</p>}
         <input type="text" name="bankName" placeholder="Bank Name" value={formData.bankName} onChange={handleChange} className="w-full p-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-400" />
         {errors.bankName && <p className="text-red-500 text-sm">{errors.bankName}</p>}
+        
         <button
           onClick={handleSave}
           className="w-full mt-8 px-4 py-4 bg-green-400 text-white rounded-lg hover:bg-green-500 transition duration-200"
@@ -523,6 +524,7 @@ const AccountForm = ({ onComplete }) => {
         >
           Save
         </button>
+       
         {isSuccess && (
           <div className="mt-4 p-2 bg-green-100 border border-green-400 text-green-700 rounded-lg">
             Saved successfully!

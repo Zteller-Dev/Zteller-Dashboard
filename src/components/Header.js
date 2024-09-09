@@ -2,21 +2,22 @@ import React, { useContext, useState, useEffect } from 'react';
 import { SidebarContext } from '../context/SidebarContext';
 import {
   SearchIcon,
-  MoonIcon,
-  SunIcon,
+  // MoonIcon,
+  // SunIcon,
   BellIcon,
   MenuIcon,
   OutlinePersonIcon,
   OutlineCogIcon,
   OutlineLogoutIcon,
 } from '../icons';
-import { Avatar, Badge, Input, Dropdown, DropdownItem, WindmillContext } from '@windmill/react-ui';
+// import { Avatar, Badge, Input, Dropdown, DropdownItem, WindmillContext } from '@windmill/react-ui';
+import { Avatar, Badge, Input, Dropdown, DropdownItem } from '@windmill/react-ui';
 import LogoutPopup from './LogoutPopup';
 import { useHistory } from 'react-router-dom';
 import ztellerImage from '../assets/img/zteller.png'; // Use a default image if needed
 
 function Header() {
-  const { mode, toggleMode } = useContext(WindmillContext);
+  // const { mode, toggleMode } = useContext(WindmillContext);
   const { toggleSidebar } = useContext(SidebarContext);
 
   const [isNotificationsMenuOpen, setIsNotificationsMenuOpen] = useState(false);

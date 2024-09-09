@@ -1,12 +1,27 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { useHistory } from 'react-router-dom'; // Import useHistory
-
+import { useHistory } from 'react-router-dom'; 
 import ImageMobile from '../assets/img/Ztellalogo.png';
 import ImageDesktop from '../assets/img/favicon.png';
 import { GoogleIcon, FacebookIcon } from '../icons';
 import { Label, Input, Button } from '@windmill/react-ui';
+import Modal from 'react-modal';  // Import Modal
 
+// Custom modal styles 
+const customStyles = {
+  content: {
+    top: '50%',
+    left: '50%',
+    right: 'auto',
+    bottom: 'auto',
+    marginRight: '-50%',
+    transform: 'translate(-50%, -50%)',
+    padding: '20px',
+    backgroundColor: '#fff',
+    borderRadius: '10px',
+    boxShadow: '0px 4px 15px rgba(0,0,0,0.2)',
+  },
+};
 
 function Login() {
   const [isHoveredForgotPassword, setIsHoveredForgotPassword] = useState(false);
@@ -14,34 +29,43 @@ function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [isMobileView, setIsMobileView] = useState(false); // Mobile view state
+  const [showModal, setShowModal] = useState(false); // Modal state
 
-  const history = useHistory(); // Initialize useHistory
+  const history = useHistory();
 
-  const handleMouseEnterForgotPassword = () => {
-    setIsHoveredForgotPassword(true);
-  };
+  // Detect if it's a mobile view
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth <= 768) {
+        setIsMobileView(true);
+        setShowModal(true);  // Show modal when in mobile view
+      } else {
+        setIsMobileView(false);
+        setShowModal(false);
+      }
+    };
 
-  const handleMouseLeaveForgotPassword = () => {
-    setIsHoveredForgotPassword(false);
-  };
+    // Check on load
+    handleResize();
 
-  const handleMouseEnterCreateAccount = () => {
-    setIsHoveredCreateAccount(true);
-  };
+    // Listen to window resize
+    window.addEventListener('resize', handleResize);
 
-  const handleMouseLeaveCreateAccount = () => {
-    setIsHoveredCreateAccount(false);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
+  const closeModal = () => {
+    setShowModal(false);
   };
 
   const handleLogin = () => {
     if (!email || !password) {
       setError('Please fill in all fields.');
     } else {
-      // Clear error and proceed with login
       setError('');
-      // Add your login logic here, e.g., navigating to another page
-
-      // On successful login, redirect to the /app page
       history.push('/app');
     }
   };
@@ -55,13 +79,13 @@ function Login() {
               aria-hidden="true"
               className="object-cover w-full h-full md:hidden"
               src={ImageMobile}
-              alt="Office"
+              alt="Mobile logo"
             />
             <img
               aria-hidden="true"
               className="hidden object-cover w-full h-full md:block"
               src={ImageDesktop}
-              alt="Office"
+              alt="Desktop logo"
             />
           </div>
           <main className="flex items-center justify-center p-6 sm:p-12 md:w-1/2">
@@ -84,7 +108,7 @@ function Login() {
                 <Input
                   className="mt-1"
                   type="password"
-                  placeholder="***************"
+                  placeholder="*"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
@@ -93,15 +117,13 @@ function Login() {
               <Button
                 className="mt-4"
                 style={{
-                  backgroundColor: '#41aa5e', // Custom green color
+                  backgroundColor: '#41aa5e',
                   transition: 'background-color 0.3s ease',
                 }}
-                onMouseEnter={(e) => e.target.style.backgroundColor = '#16a34a'} // Darker green on hover
-                onMouseLeave={(e) => e.target.style.backgroundColor = '#41aa5e'} // Original green
+                onMouseEnter={(e) => e.target.style.backgroundColor = '#16a34a'}
+                onMouseLeave={(e) => e.target.style.backgroundColor = '#41aa5e'}
                 onClick={handleLogin}
                 block
-                // tag={Link}
-                // to="/app"
               >
                 Log in
               </Button>
@@ -122,11 +144,11 @@ function Login() {
                   to="/forgot-password"
                   className="text-sm font-medium hover:underline"
                   style={{
-                    color: isHoveredForgotPassword ? '#16a34a' : '#16a34a', // Custom green color
+                    color: isHoveredForgotPassword ? '#16a34a' : '#16a34a',
                     textDecoration: isHoveredForgotPassword ? 'underline' : 'none',
                   }}
-                  onMouseEnter={handleMouseEnterForgotPassword}
-                  onMouseLeave={handleMouseLeaveForgotPassword}
+                  onMouseEnter={() => setIsHoveredForgotPassword(true)}
+                  onMouseLeave={() => setIsHoveredForgotPassword(false)}
                 >
                   Forgot your password?
                 </Link>
@@ -136,11 +158,11 @@ function Login() {
                   to="/create-account"
                   className="text-sm font-medium hover:underline"
                   style={{
-                    color: isHoveredCreateAccount ? '#16a34a' : '#16a34a', // Custom green color
+                    color: isHoveredCreateAccount ? '#16a34a' : '#16a34a',
                     textDecoration: isHoveredCreateAccount ? 'underline' : 'none',
                   }}
-                  onMouseEnter={handleMouseEnterCreateAccount}
-                  onMouseLeave={handleMouseLeaveCreateAccount}
+                  onMouseEnter={() => setIsHoveredCreateAccount(true)}
+                  onMouseLeave={() => setIsHoveredCreateAccount(false)}
                 >
                   Create account
                 </Link>
@@ -149,6 +171,26 @@ function Login() {
           </main>
         </div>
       </div>
+
+      {/* Modal for mobile view */}
+      {showModal && (
+        <Modal
+          isOpen={showModal}
+          onRequestClose={closeModal}
+          style={customStyles}
+          contentLabel="Switch to Desktop Mode"
+        >
+          <h2 style={{
+                 fontWeight:'bold',
+                }}>Please Switch to Desktop Mode</h2>
+          <p>This page is best viewed in desktop mode. Please switch your browser to desktop mode for a better experience.</p>
+          <Button style={{
+                  backgroundColor: '#41aa5e',
+                  transition: 'background-color 0.3s ease',
+                }}
+                onClick={closeModal}>Close</Button>
+        </Modal>
+      )}
     </div>
   );
 }
