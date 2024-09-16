@@ -19,7 +19,7 @@ import { EditIcon } from '../icons'
 
 import response from '../utils/demo/tableData'
 
-const response2 = response.concat([])
+// const response2 = response.concat([])
 
 function Tables() {
   const [isCardVisible, setIsCardVisible] = useState(false)

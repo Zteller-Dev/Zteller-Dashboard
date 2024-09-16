@@ -2,6 +2,7 @@ import React, { lazy } from 'react'
 import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom'
 import AccessibleNavigationAnnouncer from './components/AccessibleNavigationAnnouncer'
 import Profile from './pages/Profile';
+import GetStartedPopup from './components/GetStartedPopup';
 
 const Layout = lazy(() => import('./containers/Layout'))
 const Login = lazy(() => import('./pages/Login'))
@@ -16,6 +17,7 @@ function App() {
         <Switch>
           <Route path="/login" component={Login} />
           <Route path="/create-account" component={CreateAccount} />
+          <Route path="/get-started" component={GetStartedPopup} />
           <Route path="/forgot-password" component={ForgotPassword} />
 
           {/* Place new routes over this */}

@@ -41,7 +41,7 @@ function CreateAccount() {
       // Add your account creation logic here, e.g., an API call to create a new account
 
       // On successful account creation, redirect to the /login page
-      history.push('/login');
+      history.push('/get-started');
     }
   };
 
@@ -122,7 +122,7 @@ function CreateAccount() {
                   I agree to the <span className="underline" tag={Link} to="#">privacy policy</span>
                 </span>
               </Label>
-
+              
               <Button
                 className="mt-4"
                 style={{
@@ -136,7 +136,7 @@ function CreateAccount() {
               >
                 Create account
               </Button>
-
+              
               <hr className="my-8" />
 
               <Button block layout="outline">
